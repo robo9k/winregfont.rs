@@ -57,7 +57,7 @@ struct FontResourceOpts {
     /// Font filename
     ///
     /// Valid filenames have an extension of .fon, .fnt, .ttf, .ttc, .fot, or .otf
-    #[clap(name = "FILE", required = true, min_values = 1, parse(try_from_os_str = try_parse_font_filename))]
+    #[clap(name = "FILE", parse(try_from_os_str = try_parse_font_filename))]
     filenames: Vec<PathBuf>,
 }
 
