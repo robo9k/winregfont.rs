@@ -2,7 +2,10 @@ use std::{
     ffi::OsStr,
     path::{Path, PathBuf},
 };
-use winregfont::font_resource::{add_from_cstring as add_font_resource, broadcast_fontchange};
+use winregfont::font_resource::{
+    add_from_cstring as add_font_resource, broadcast_fontchange,
+    remove_from_cstring as remove_font_resource,
+};
 
 const FONT_FILENAME_EXTENSIONS: [&'static str; 6] = ["fon", "fnt", "ttf", "ttc", "fot", "otf"];
 
@@ -30,7 +33,10 @@ fn try_parse_font_filename(filename: &OsStr) -> Result<PathBuf, String> {
 
 #[derive(clap::Clap)]
 enum ResourceAction {
+    #[clap(alias = "a")]
     Add,
+    #[clap(alias = "r")]
+    Remove,
 }
 
 #[derive(clap::Clap)]
@@ -72,6 +78,10 @@ fn main() {
                     filename.display()
                 ),
                 Err(_) => eprintln!("Could not add font for file {}", filename.display()),
+            },
+            ResourceAction::Remove => match remove_font_resource(filename_cstr) {
+                true => println!("Successfully removed font for file {}", filename.display()),
+                false => eprintln!("Could not remove font for file {}", filename.display()),
             },
         }
     }
