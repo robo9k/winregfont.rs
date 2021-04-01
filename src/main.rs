@@ -31,6 +31,12 @@ fn try_parse_font_filename(filename: &OsStr) -> Result<PathBuf, String> {
 #[derive(clap::Clap)]
 #[clap(author, about, version, setting = clap::AppSettings::WaitOnError, setting = clap::AppSettings::ColoredHelp)]
 struct AddFontResourceOpts {
+    /// Don't broadcast font change
+    ///
+    /// Do not send a WM_FONTCHANGE message as a broadcast to all top-level windows
+    #[clap(long = "no-fontchange-broadcast", parse(from_flag = std::ops::Not::not))]
+    broadcast_fontchange: bool,
+
     /// Font filename
     ///
     /// Valid filenames have an extension of .fon, .fnt, .ttf, .ttc, .fot, or .otf
@@ -57,8 +63,10 @@ fn main() {
         }
     }
 
-    match broadcast_fontchange() {
-        true => println!("Successfully broadcasted font change message"),
-        false => eprintln!("Could not broadcast font change message"),
+    if opts.broadcast_fontchange {
+        match broadcast_fontchange() {
+            true => println!("Successfully broadcasted font change message"),
+            false => eprintln!("Could not broadcast font change message"),
+        }
     }
 }
