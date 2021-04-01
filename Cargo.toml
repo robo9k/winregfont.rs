@@ -5,3 +5,4 @@ edition = "2018"
 
 [dependencies]
 bindings = { package = "winregfont_bindings", path = "bindings" }
+widestring = "0.4.3"
