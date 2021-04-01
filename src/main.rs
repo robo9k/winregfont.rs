@@ -2,7 +2,7 @@ use std::{
     ffi::OsStr,
     path::{Path, PathBuf},
 };
-use winregfont::font_resource::add_from_cstring as add_font_resource;
+use winregfont::font_resource::{add_from_cstring as add_font_resource, broadcast_fontchange};
 
 const FONT_FILENAME_EXTENSIONS: [&'static str; 6] = ["fon", "fnt", "ttf", "ttc", "fot", "otf"];
 
@@ -42,6 +42,7 @@ fn main() {
     use clap::Clap;
 
     let opts = AddFontResourceOpts::parse();
+
     for filename in opts.filenames {
         let filename_cstr =
             widestring::U16CString::from_os_str(filename.clone()).expect("Contains no NUL value");
@@ -54,5 +55,10 @@ fn main() {
             ),
             Err(_) => eprintln!("Could not add font for file {}", filename.display()),
         }
+    }
+
+    match broadcast_fontchange() {
+        true => println!("Successfully broadcasted font change message"),
+        false => eprintln!("Could not broadcast font change message"),
     }
 }

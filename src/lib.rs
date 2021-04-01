@@ -1,4 +1,5 @@
 pub mod font_resource {
+    use bindings::Windows::Win32::WindowsAndMessaging::*;
     use bindings::Windows::Win32::{Gdi::AddFontResourceW, SystemServices::PWSTR};
     use std::convert::TryFrom;
 
@@ -10,5 +11,10 @@ pub mod font_resource {
             0 => Err(()),
             rv => Ok(u16::try_from(rv).expect("API contract violation")),
         }
+    }
+
+    pub fn broadcast_fontchange() -> bool {
+        let rv = unsafe { PostMessageW(HWND(0xffff), WM_FONTCHANGE, WPARAM(0), LPARAM(0)) };
+        rv.into()
     }
 }
