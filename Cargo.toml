@@ -1,7 +1,19 @@
 [package]
 name = "winregfont"
 version = "0.1.0"
+authors = ["robo9k <robo9k@symlink.io>"]
 edition = "2018"
+description = """
+CLI to add or remove files as temporary Windows system fonts
+"""
+repository = "https://github.com/robo9k/winregfont.rs"
+keywords = ["font"]
+categories = ["command-line-utilities", "os::windows-apis"]
+exclude = [".gitignore", "Rust.ttf"]
+publish = false
+
+[badges]
+maintenance = { status = "experimental" }
 
 [dependencies]
 bindings = { package = "winregfont_bindings", path = "bindings" }
