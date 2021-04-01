@@ -29,6 +29,7 @@ fn try_parse_font_filename(filename: &OsStr) -> Result<PathBuf, String> {
 }
 
 #[derive(clap::Clap)]
+#[clap(author, about, version, setting = clap::AppSettings::WaitOnError, setting = clap::AppSettings::ColoredHelp)]
 struct AddFontResourceOpts {
     /// Font filename
     ///
