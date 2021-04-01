@@ -29,8 +29,19 @@ fn try_parse_font_filename(filename: &OsStr) -> Result<PathBuf, String> {
 }
 
 #[derive(clap::Clap)]
+enum ResourceAction {
+    Add,
+}
+
+#[derive(clap::Clap)]
 #[clap(author, about, version, setting = clap::AppSettings::WaitOnError, setting = clap::AppSettings::ColoredHelp)]
-struct AddFontResourceOpts {
+struct FontResourceOpts {
+    /// Action
+    ///
+    /// Action to apply to the font resources
+    #[clap(arg_enum, short, long, default_value = "add")]
+    action: ResourceAction,
+
     /// Don't broadcast font change
     ///
     /// Do not send a WM_FONTCHANGE message as a broadcast to all top-level windows
@@ -47,19 +58,21 @@ struct AddFontResourceOpts {
 fn main() {
     use clap::Clap;
 
-    let opts = AddFontResourceOpts::parse();
+    let opts = FontResourceOpts::parse();
 
     for filename in opts.filenames {
         let filename_cstr =
             widestring::U16CString::from_os_str(filename.clone()).expect("Contains no NUL value");
 
-        match add_font_resource(filename_cstr) {
-            Ok(num_fonts) => println!(
-                "Successfully added {} font for file {}",
-                num_fonts,
-                filename.display()
-            ),
-            Err(_) => eprintln!("Could not add font for file {}", filename.display()),
+        match opts.action {
+            ResourceAction::Add => match add_font_resource(filename_cstr) {
+                Ok(num_fonts) => println!(
+                    "Successfully added {} font for file {}",
+                    num_fonts,
+                    filename.display()
+                ),
+                Err(_) => eprintln!("Could not add font for file {}", filename.display()),
+            },
         }
     }
 
