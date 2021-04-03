@@ -49,4 +49,5 @@ BEGIN
     END
 END
 
-winregfont ICON "winregfont.ico"
+// IDI_APPLICATION
+32512 ICON "winregfont.ico"
