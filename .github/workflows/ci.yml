@@ -1,0 +1,24 @@
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_windows:
+    name: 'Build on Windows'
+    runs-on: 'windows-latest'
+    steps:
+      - uses: 'actions/checkout@v2'
+      - uses: 'actions-rs/toolchain@v1'
+        with:
+          profile: 'minimal'
+      - uses: 'actions-rs/cargo@v1'
+        with:
+          command: 'build'
+          args: '--release'
+      - uses: 'actions/checkout@v2'
+        with:
+          name: 'exe'
+          path: 'target/release/winregfont.exe'
+          if-no-files-found: 'error'
