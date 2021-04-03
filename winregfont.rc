@@ -1,8 +1,12 @@
 #include <winres.h>
+#include "crate-pkg.h"
+
+#define S(x) #x
+#define STR(x) S(x) "\0"
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION     0,1,0,0
-PRODUCTVERSION  0,1,0,0
+FILEVERSION     CARGO_PKG_VERSION_MAJOR, CARGO_PKG_VERSION_MINOR, CARGO_PKG_VERSION_PATCH, 0
+PRODUCTVERSION  CARGO_PKG_VERSION_MAJOR, CARGO_PKG_VERSION_MINOR, CARGO_PKG_VERSION_PATCH, 0
 FILEFLAGSMASK   VS_FFI_FILEFLAGSMASK
 FILEFLAGS       0
 FILEOS          VOS_NT_WINDOWS32
@@ -13,14 +17,14 @@ BEGIN
     BEGIN
         BLOCK "040904E4"
         BEGIN
-            VALUE "Comments",         "https://github.com/robo9k/winregfont.rs\0"
+            VALUE "Comments",         STR(CARGO_PKG_HOMEPAGE)
             VALUE "CompanyName",      "\0"
-            VALUE "FileDescription",  "temporary system fonts CLI\0"
-            VALUE "FileVersion",      "0.1.0\0"
+            VALUE "FileDescription",  STR(CARGO_PKG_DESCRIPTION)
+            VALUE "FileVersion",      STR(CARGO_PKG_VERSION)
             VALUE "InternalName",     "winregfont\0"
             VALUE "OriginalFilename", "winregfont.exe\0"
-            VALUE "ProductName",      "winregfont\0"
-            VALUE "ProductVersion",   "0.1.0\0"
+            VALUE "ProductName",      STR(CARGO_PKG_NAME)
+            VALUE "ProductVersion",   STR(CARGO_PKG_VERSION)
         END
     END
     BLOCK "VarFileInfo"
