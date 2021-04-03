@@ -1,6 +1,6 @@
 [package]
 name = "winregfont"
-version = "0.1.0"
+version = "0.1.0-alpha"
 authors = ["robo9k <robo9k@symlink.io>"]
 edition = "2018"
 description = """
