@@ -33,14 +33,31 @@ fn try_parse_font_filename(filename: &OsStr) -> Result<PathBuf, String> {
 
 #[derive(clap::Clap)]
 enum ResourceAction {
+    /// Add font
     #[clap(alias = "a")]
     Add,
+    /// Remove font
     #[clap(alias = "r")]
     Remove,
 }
 
+/// CLI to add or remove files as temporary system fonts
+///
+/// Installing font files as permanent system fonts usually requires administrative permissions.
+/// Using this CLI you can install temporary system fonts as a regular user for the current session.
 #[derive(clap::Clap)]
-#[clap(author, about, version, setting = clap::AppSettings::WaitOnError, setting = clap::AppSettings::ColoredHelp)]
+#[clap(author, version,
+    setting = clap::AppSettings::WaitOnError, setting = clap::AppSettings::ColoredHelp,
+    before_help = "App icon \"Increase Font Size\" by \"Hello Many\" from thenounproject.com",
+    before_long_help = "Application .exe icon is \"Increase Font Size\" by \"Hello Many\" from thenounproject.com",
+    after_long_help = r#"Note that due to CLI syntax you can also just drag & drop font files on the .exe
+
+The WM_FONTCHANGE broadcast allows other applications to reload the font list. If applictions do not support this message, they have to be restarted to detect those font changes.
+
+Note that the underlying Windows API supports Type1 fonts which require a special "abcxxxxx.pfm | abcxxxxx.pfb" filename syntax.
+This syntax and .mmm files are not supported by this CLI.
+"#,
+)]
 struct FontResourceOpts {
     /// Action
     ///
